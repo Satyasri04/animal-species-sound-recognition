@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block title %}About — SoundSpecies{% endblock %}
+
+{% block content %}
+
+<div class="about-hero">
+    <span class="label">about the project</span>
+    <h1>How <span class="gold">SoundSpecies</span> Works</h1>
+    <p class="section-subtitle" style="max-width: 480px; margin: 8px auto 0;">Automated multi-class animal species
+        recognition through acoustic signal processing and deep neural networks</p>
+</div>
+
+<!-- Pipeline -->
+<div class="card">
+    <h2><span class="icon">⚙️</span> Processing Pipeline</h2>
+    <div class="pipeline">
+        <div class="pipeline-step">
+            <div class="step-num">1</div>
+            <div class="step-title">Upload</div>
+            <div class="step-desc">Audio file loaded at 16kHz mono via Librosa</div>
+        </div>
+        <div class="pipeline-step">
+            <div class="step-num">2</div>
+            <div class="step-title">Extract</div>
+            <div class="step-desc">YAMNet generates 1024-dim embeddings</div>
+        </div>
+        <div class="pipeline-step">
+            <div class="step-num">3</div>
+            <div class="step-title">Classify</div>
+            <div class="step-desc">Deep CNN classifies into 12 species</div>
+        </div>
+        <div class="pipeline-step">
+            <div class="step-num">4</div>
+            <div class="step-title">Result</div>
+            <div class="step-desc">Species name and confidence displayed</div>
+        </div>
+    </div>
+</div>
+
+<!-- About -->
+<div class="card card-accent">
+    <h2><span class="icon">🎯</span> What It Does</h2>
+    <p style="margin-top: 12px; line-height: 1.8; color: var(--text-secondary); font-size: 0.92rem;">
+        This application uses deep learning to identify animal species from their sounds.
+        Upload a <strong style="color: var(--text);">.wav</strong> audio recording, and the AI will analyze the acoustic
+        features
+        and predict which of <strong style="color: var(--accent);">12 animal species</strong> produced the sound, along
+        with a confidence score.
+    </p>
+</div>
+
+<!-- Tech Stack -->
+<div class="card">
+    <h2><span class="icon">🛠️</span> Tech Stack</h2>
+    <div class="tech-grid">
+        <div class="tech-card">
+            <span class="tech-icon">🐍</span>
+            <h3>Flask</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Backend & routing</p>
+        </div>
+        <div class="tech-card">
+            <span class="tech-icon">🧠</span>
+            <h3>TensorFlow</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Deep learning</p>
+        </div>
+        <div class="tech-card">
+            <span class="tech-icon">🎵</span>
+            <h3>YAMNet</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Audio features</p>
+        </div>
+        <div class="tech-card">
+            <span class="tech-icon">📊</span>
+            <h3>Librosa</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Signal processing</p>
+        </div>
+        <div class="tech-card">
+            <span class="tech-icon">🔢</span>
+            <h3>Scikit-learn</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Label encoding</p>
+        </div>
+    </div>
+</div>
+
+<!-- Dataset -->
+<div class="card">
+    <h2><span class="icon">📂</span> Dataset</h2>
+    <p style="margin-top: 12px; line-height: 1.8; color: var(--text-secondary); font-size: 0.92rem;">
+        Trained on a curated subset of the <strong style="color: var(--text);">ESC-50</strong> dataset —
+        <strong style="color: var(--accent);">480 samples</strong> across 12 species.
+        Each clip is 5 seconds at 44.1 kHz, downsampled to 16 kHz for processing.
+    </p>
+</div>
+
+<!-- Species -->
+<div class="card">
+    <h2><span class="icon">🌍</span> Recognizable Species</h2>
+    <div class="species-grid">
+        {% for s in species %}
+        <a href="{{ url_for('animal_info', species=s.key) }}" target="_blank" class="species-card">
+            <span class="species-emoji">{{ s.emoji }}</span>
+            <span class="species-name">{{ s.name }}</span>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+<div style="text-align: center; margin-top: 28px;">
+    <a href="/" class="btn btn-primary">Try It Now →</a>
+</div>
+
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}SoundSpecies — Identify Animal Sounds{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<div class="card hero">
+    <span class="hero-badge">🧠 AI-Powered Recognition</span>
+    <h1>Identify <span class="gold typewriter-text" id="heroTypewriter">Animal Sounds</span></h1>
+    <p class="section-subtitle">Upload an audio recording and our deep learning model will instantly identify the
+        species</p>
+
+    <form id="predictForm" action="{{ url_for('predict') }}" method="POST" enctype="multipart/form-data">
+        <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">🎙️</div>
+            <div class="equalizer">
+                <span class="eq-bar"></span>
+                <span class="eq-bar"></span>
+                <span class="eq-bar"></span>
+                <span class="eq-bar"></span>
+                <span class="eq-bar"></span>
+            </div>
+            <p class="upload-text">Drag & drop your audio file here</p>
+            <p class="upload-hint">or click to browse &middot; .wav format</p>
+            <input type="file" name="audio_file" id="audioFileInput" accept=".wav" required>
+        </div>
+
+        <div class="file-name-display" id="fileNameDisplay">
+            🎵 <span id="selectedFileName"></span>
+        </div>
+
+        <div id="audioPreviewContainer"></div>
+
+        <button type="submit" class="btn btn-primary btn-lg" style="margin-top: 24px;" id="predictBtn">
+            Predict Species →
+        </button>
+    </form>
+</div>
+
+{% if prediction %}
+<!-- Result -->
+<div class="card result-section" id="resultCard">
+    <div class="result-card">
+        <span class="label">Prediction Result</span>
+
+        <!-- Big animated 3D emoji -->
+        <div class="result-emoji-animated" id="resultEmoji">
+            <div class="emoji-glow"></div>
+            <span class="emoji-character">{{ emoji }}</span>
+        </div>
+
+        <div class="result-species"><span class="gold">{{ prediction }}</span></div>
+
+        <div class="confidence-wrapper">
+            <div class="confidence-label">
+                <span>Confidence</span>
+                <span class="confidence-value">{{ (confidence * 100) | round(1) }}%</span>
+            </div>
+            <div class="confidence-bar">
+                <div class="confidence-fill" style="--target-width: {{ (confidence * 100) | round(1) }}%;"
+                    id="confidenceFill"></div>
+            </div>
+        </div>
+
+        <div class="result-audio">
+            <audio controls>
+                <source src="{{ url_for('static', filename='audio_uploads/' + filename) }}" type="audio/wav">
+            </audio>
+        </div>
+
+        <div class="result-actions">
+            <a href="{{ url_for('animal_info', species=prediction_key) }}" target="_blank" class="btn btn-primary">
+                Learn More →
+            </a>
+            <a href="/" class="btn btn-outline">
+                Try Another
+            </a>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    {% if prediction %}
+    document.addEventListener('DOMContentLoaded', function () {
+        const fill = document.getElementById('confidenceFill');
+        if (fill) {
+            fill.style.width = fill.style.getPropertyValue('--target-width');
+        }
+        initCursorTrackingEmoji();
+    });
+    {% endif %}
+</script>
+{% endblock %}

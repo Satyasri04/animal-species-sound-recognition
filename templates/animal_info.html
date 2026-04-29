@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ animal.name }} — SoundSpecies{% endblock %}
+
+{% block content %}
+
+<a href="/" class="btn btn-outline btn-sm" style="margin-bottom: 16px;">← Back</a>
+
+<!-- Header -->
+<div class="info-header">
+    <div class="info-emoji">{{ animal.emoji }}</div>
+    <h1 class="info-title">{{ animal.name }}</h1>
+    <p class="info-scientific">{{ animal.scientific_name }}</p>
+
+    <div class="meta-badges" style="justify-content: center; margin-top: 16px;">
+        <span class="badge badge-gold">🕐 {{ animal.avg_lifespan }}</span>
+        <span class="badge badge-blue">🍽️ {{ animal.diet }}</span>
+    </div>
+</div>
+
+<hr class="divider">
+
+<!-- Info Grid -->
+<div class="info-grid">
+    <div class="card card-accent">
+        <span class="label">About</span>
+        <h3>{{ animal.name }}</h3>
+        <p style="margin-top: 8px; color: var(--text-secondary); line-height: 1.7; font-size: 0.9rem;">{{
+            animal.description }}</p>
+    </div>
+
+    <div class="card">
+        <span class="label">habitat</span>
+        <h3>Where They Live</h3>
+        <p style="margin-top: 8px; color: var(--text-secondary); line-height: 1.7; font-size: 0.9rem;">{{ animal.habitat
+            }}</p>
+    </div>
+
+    <div class="card">
+        <span class="label">sound</span>
+        <h3>How They Sound</h3>
+        <p style="margin-top: 8px; color: var(--text-secondary); line-height: 1.7; font-size: 0.9rem;">{{
+            animal.sound_description }}</p>
+    </div>
+
+    <div class="card card-accent" style="grid-column: 1 / -1;">
+        <span class="label">did you know?</span>
+        <h3>Fun Facts</h3>
+        <ul class="fact-list" style="margin-top: 8px;">
+            {% for fact in animal.fun_facts %}
+            <li>{{ fact }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<div style="text-align: center; margin-top: 28px;">
+    <a href="/" class="btn btn-primary">Identify Another Sound →</a>
+</div>
+
+{% endblock %}

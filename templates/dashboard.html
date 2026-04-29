@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard — SoundSpecies{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-hero">
+    <span class="label">overview</span>
+    <h1>Dashboard</h1>
+    <p class="section-subtitle">Model stats and prediction activity</p>
+</div>
+
+<!-- Stats -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <span class="stat-icon">🐾</span>
+        <div class="stat-value">12</div>
+        <div class="stat-label">Species</div>
+    </div>
+    <div class="stat-card">
+        <span class="stat-icon">🎵</span>
+        <div class="stat-value">480</div>
+        <div class="stat-label">Samples</div>
+    </div>
+    <div class="stat-card">
+        <span class="stat-icon">🧠</span>
+        <div class="stat-value">YAMNet</div>
+        <div class="stat-label">Extractor</div>
+    </div>
+    <div class="stat-card">
+        <span class="stat-icon">📊</span>
+        <div class="stat-value">{{ total_predictions }}</div>
+        <div class="stat-label">Predictions</div>
+    </div>
+</div>
+
+<!-- History -->
+<div class="card">
+    <h2><span class="icon">📋</span> Recent Activity</h2>
+    <p class="section-subtitle">Predictions made this session</p>
+
+    {% if history %}
+    <div style="margin-top: 20px;">
+        <table style="width: 100%; border-collapse: separate; border-spacing: 0 6px;">
+            <thead>
+                <tr>
+                    <th
+                        style="text-align: left; padding: 8px 12px; color: var(--text-muted); font-weight: 500; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                        Species</th>
+                    <th
+                        style="text-align: center; padding: 8px 12px; color: var(--text-muted); font-weight: 500; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                        Count</th>
+                    <th
+                        style="text-align: left; padding: 8px 12px; color: var(--text-muted); font-weight: 500; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                        Distribution</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for species, count in history.items() %}
+                <tr style="background: rgba(255,255,255,0.02); border-radius: var(--radius-md);">
+                    <td
+                        style="padding: 12px; border-radius: var(--radius-sm) 0 0 var(--radius-sm); font-weight: 600; font-size: 0.9rem;">
+                        {{ species }}
+                    </td>
+                    <td style="padding: 12px; text-align: center;">
+                        <span class="badge badge-gold">{{ count }}</span>
+                    </td>
+                    <td style="padding: 12px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0;">
+                        <div class="confidence-bar" style="max-width: 180px;">
+                            <div class="confidence-fill" style="width: {{ (count / max_count * 100) | round }}%;"></div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
+        <p style="font-size: 2rem; margin-bottom: 10px;">🔇</p>
+        <p style="font-size: 0.9rem;">No predictions yet</p>
+        <a href="/" class="btn btn-primary btn-sm" style="margin-top: 14px;">Start Predicting →</a>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Species -->
+<div class="card">
+    <h2><span class="icon">🌍</span> All Species</h2>
+    <p class="section-subtitle">Click any species to learn more</p>
+
+    <div class="species-grid">
+        {% for s in species %}
+        <a href="{{ url_for('animal_info', species=s.key) }}" target="_blank" class="species-card">
+            <span class="species-emoji">{{ s.emoji }}</span>
+            <span class="species-name">{{ s.name }}</span>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

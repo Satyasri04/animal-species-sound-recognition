@@ -1,0 +1,10 @@
+Flask
+tensorflow
+tensorflow_hub
+numpy
+librosa
+pandas
+scikit-learn
+matplotlib
+seaborn
+Werkzeug
